@@ -63,35 +63,43 @@ class _OnboardingMovieSelectionScreenState
               children: [
                 const SizedBox(height: 38),
                 if (!store.canProceed)
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Welcome',
-                        style: TextStyle(
-                          fontSize: 24,
-                          color: AppColors.kWhite,
-                          fontWeight: FontWeight.bold,
+                  SizedBox(
+                    height: 80,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Welcome',
+                          style: TextStyle(
+                            fontSize: 24,
+                            color: AppColors.kWhite,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 12),
-                      const Text(
-                        'Choose your 3 favorite movies',
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: AppColors.kWhite,
-                          fontWeight: FontWeight.w500,
+                        const SizedBox(height: 12),
+                        const Text(
+                          'Choose your 3 favorite movies',
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: AppColors.kWhite,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   )
                 else
-                  const Text(
-                    'Continue to next step 👉',
-                    style: TextStyle(
-                      fontSize: 24,
-                      color: AppColors.kWhite,
-                      fontWeight: FontWeight.bold,
+                  Container(
+                    padding: const EdgeInsets.only(top: 20),
+
+                    height: 80,
+                    child: const Text(
+                      'Continue to next step 👉',
+                      style: TextStyle(
+                        fontSize: 24,
+                        color: AppColors.kWhite,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 Expanded(
@@ -119,11 +127,9 @@ class _OnboardingMovieSelectionScreenState
                           try {
                             await store.saveFavoriteMovies();
                             if (context.mounted) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Favorite movies saved!'),
-                                ),
-                              );
+                              Navigator.of(
+                                context,
+                              ).pushReplacementNamed('/genre-onboarding');
                             }
                           } catch (e) {
                             if (context.mounted) {

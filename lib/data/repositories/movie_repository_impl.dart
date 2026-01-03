@@ -12,16 +12,30 @@ class MovieRepositoryImpl implements IMovieRepository {
   final TmdbApiService apiService;
   final LocalDataSource localDataSource;
 
+  // In-memory cache
+  final Map<int, List<Movie>> _moviesCache = {};
+  List<Genre>? _genresCache;
+  final Map<int, Map<int, List<Movie>>> _moviesByGenreCache = {};
+
   MovieRepositoryImpl(this.apiService, this.localDataSource);
 
   @override
   Future<List<Movie>> getPopularMovies({int page = 1}) async {
+    // Return cached data if available
+    if (_moviesCache.containsKey(page)) {
+      return _moviesCache[page]!;
+    }
+
     try {
       final response = await apiService.getPopularMovies(page: page);
       final List<dynamic> results = response['results'];
-      return results
+      final movies = results
           .map((json) => MovieModel.fromJson(json).toEntity())
           .toList();
+
+      // Cache the results
+      _moviesCache[page] = movies;
+      return movies;
     } on ServerException {
       rethrow;
     } catch (e) {
@@ -31,12 +45,21 @@ class MovieRepositoryImpl implements IMovieRepository {
 
   @override
   Future<List<Genre>> getGenres() async {
+    // Return cached data if available
+    if (_genresCache != null) {
+      return _genresCache!;
+    }
+
     try {
       final response = await apiService.getGenres();
       final List<dynamic> genres = response['genres'];
-      return genres
+      final genreList = genres
           .map((json) => GenreModel.fromJson(json).toEntity())
           .toList();
+
+      // Cache the results
+      _genresCache = genreList;
+      return genreList;
     } on ServerException {
       rethrow;
     } catch (e) {
@@ -46,12 +69,23 @@ class MovieRepositoryImpl implements IMovieRepository {
 
   @override
   Future<List<Movie>> getMoviesByGenre(int genreId, {int page = 1}) async {
+    // Return cached data if available
+    if (_moviesByGenreCache.containsKey(genreId) &&
+        _moviesByGenreCache[genreId]!.containsKey(page)) {
+      return _moviesByGenreCache[genreId]![page]!;
+    }
+
     try {
       final response = await apiService.getMoviesByGenre(genreId, page: page);
       final List<dynamic> results = response['results'];
-      return results
+      final movies = results
           .map((json) => MovieModel.fromJson(json).toEntity())
           .toList();
+
+      // Cache the results
+      _moviesByGenreCache[genreId] ??= {};
+      _moviesByGenreCache[genreId]![page] = movies;
+      return movies;
     } on ServerException {
       rethrow;
     } catch (e) {

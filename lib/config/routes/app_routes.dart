@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:movie_study_case/presentation/screens/splash/splash_screen.dart';
+import 'package:movie_study_case/presentation/screens/onboarding_movie_selection/onboarding_movie_selection_screen.dart';
+import 'package:movie_study_case/presentation/screens/onboarding_genre_selection/onboarding_genre_selection_screen.dart';
 
 class AppRoutes {
   static const String splash = '/';
-  static const String onboarding = '/onboarding';
-  static const String paywall = '/paywall';
-  static const String home = '/home';
+  static const String movieOnboarding = '/movie-onboarding';
+  static const String genreOnboarding = '/genre-onboarding';
 
-  static Route<dynamic> generateRoute(RouteSettings settings) {
-    switch (settings.name) {
-      // TODO: Implement routes
-      default:
-        return MaterialPageRoute(
-          builder: (_) => Scaffold(body: Center(child: Text('No route defined for ${settings.name}'))),
-        );
-    }
+  static Map<String, WidgetBuilder> getRoutes() {
+    return {
+      splash: (context) => const SplashScreen(),
+      movieOnboarding: (context) => const OnboardingMovieSelectionScreen(),
+      genreOnboarding: (context) => const OnboardingGenreSelectionScreen(),
+    };
   }
 }
