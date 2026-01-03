@@ -23,4 +23,23 @@ class LocalDataSource {
   Future<void> clearFavoriteMovies() async {
     await _prefs.remove(_favoriteMoviesKey);
   }
+
+  static const String _favoriteGenresKey = 'favorite_genres';
+
+  Future<void> saveFavoriteGenres(List<int> genreIds) async {
+    await _prefs.setStringList(
+      _favoriteGenresKey,
+      genreIds.map((id) => id.toString()).toList(),
+    );
+  }
+
+  Future<List<int>> getFavoriteGenres() async {
+    final genreIdsString = _prefs.getStringList(_favoriteGenresKey);
+    if (genreIdsString == null) return [];
+    return genreIdsString.map((id) => int.parse(id)).toList();
+  }
+
+  Future<void> clearFavoriteGenres() async {
+    await _prefs.remove(_favoriteGenresKey);
+  }
 }

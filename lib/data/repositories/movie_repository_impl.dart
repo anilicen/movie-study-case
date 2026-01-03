@@ -67,4 +67,13 @@ class MovieRepositoryImpl implements IMovieRepository {
       throw ServerException(message: 'Failed to save favorite movies');
     }
   }
+
+  @override
+  Future<void> saveFavoriteGenres(List<int> genreIds) async {
+    try {
+      await localDataSource.saveFavoriteGenres(genreIds);
+    } catch (e) {
+      throw ServerException(message: 'Failed to save favorite genres');
+    }
+  }
 }

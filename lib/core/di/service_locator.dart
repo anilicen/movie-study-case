@@ -6,7 +6,9 @@ import 'package:movie_study_case/domain/repositories/i_movie_repository.dart';
 import 'package:movie_study_case/domain/usecases/get_popular_movies.dart';
 import 'package:movie_study_case/domain/usecases/get_genres.dart';
 import 'package:movie_study_case/domain/usecases/save_favorite_movies.dart';
+import 'package:movie_study_case/domain/usecases/save_favorite_genres.dart';
 import 'package:movie_study_case/presentation/stores/onboarding_movie_store/onboarding_movie_store.dart';
+import 'package:movie_study_case/presentation/stores/onboarding_genre_store/onboarding_genre_store.dart';
 import 'package:movie_study_case/core/services/image_preloader_service.dart';
 
 import 'package:movie_study_case/core/network/dio_service.dart';
@@ -37,6 +39,7 @@ Future<void> setupDI() async {
   getIt.registerLazySingleton(() => GetPopularMoviesUseCase(getIt()));
   getIt.registerLazySingleton(() => GetGenresUseCase(getIt()));
   getIt.registerLazySingleton(() => SaveFavoriteMoviesUseCase(getIt()));
+  getIt.registerLazySingleton(() => SaveFavoriteGenresUseCase(getIt()));
 
   // Services
   getIt.registerLazySingleton<ImagePreloaderService>(
@@ -45,4 +48,5 @@ Future<void> setupDI() async {
 
   // Stores
   getIt.registerFactory(() => OnboardingMovieStore(getIt(), getIt()));
+  getIt.registerFactory(() => OnboardingGenreStore(getIt(), getIt(), getIt()));
 }

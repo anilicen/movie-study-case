@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:movie_study_case/presentation/screens/onboarding_genre_selection/onboarding_genre_selection_screen.dart';
 import 'config/theme/app_theme.dart';
 import 'core/di/service_locator.dart';
-import 'presentation/screens/onboarding_movie_selection/onboarding_movie_selection_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Movie App',
       theme: AppTheme.darkTheme,
-      home: const OnboardingMovieSelectionScreen(),
+      home: const OnboardingGenreSelectionScreen(),
       debugShowCheckedModeBanner: false,
     );
   }
