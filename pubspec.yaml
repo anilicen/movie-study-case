@@ -50,6 +50,9 @@ dependencies:
   # DI
   get_it: ^7.6.0
 
+  # Local Storage
+  shared_preferences: ^2.3.3
+
   #UI
   flutter_inner_shadow: ^0.0.1
   flutter_svg: ^2.2.3

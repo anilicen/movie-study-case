@@ -22,7 +22,7 @@ class _OnboardingMovieSelectionScreenState
   void initState() {
     super.initState();
 
-    store = OnboardingMovieStore(getIt());
+    store = getIt<OnboardingMovieStore>();
     store.loadMovies();
   }
 
@@ -115,13 +115,26 @@ class _OnboardingMovieSelectionScreenState
                   isActive: store.canProceed,
                   isLoading: false,
                   onPressed: store.canProceed
-                      ? () {
-                          // Navigate to next screen
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Selection Confirmed!'),
-                            ),
-                          );
+                      ? () async {
+                          try {
+                            await store.saveFavoriteMovies();
+                            if (context.mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Favorite movies saved!'),
+                                ),
+                              );
+                            }
+                          } catch (e) {
+                            if (context.mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Error: ${e.toString()}'),
+                                  backgroundColor: Colors.red,
+                                ),
+                              );
+                            }
+                          }
                         }
                       : null,
                 ),

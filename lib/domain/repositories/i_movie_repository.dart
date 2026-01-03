@@ -5,4 +5,5 @@ abstract class IMovieRepository {
   Future<List<Movie>> getPopularMovies({int page = 1});
   Future<List<Genre>> getGenres();
   Future<List<Movie>> getMoviesByGenre(int genreId, {int page = 1});
+  Future<void> saveFavoriteMovies(List<int> movieIds);
 }

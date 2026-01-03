@@ -167,6 +167,18 @@ mixin _$OnboardingMovieStore on _OnboardingMovieStore, Store {
     return _$retryAsyncAction.run(() => super.retry());
   }
 
+  late final _$saveFavoriteMoviesAsyncAction = AsyncAction(
+    '_OnboardingMovieStore.saveFavoriteMovies',
+    context: context,
+  );
+
+  @override
+  Future<void> saveFavoriteMovies() {
+    return _$saveFavoriteMoviesAsyncAction.run(
+      () => super.saveFavoriteMovies(),
+    );
+  }
+
   late final _$_OnboardingMovieStoreActionController = ActionController(
     name: '_OnboardingMovieStore',
     context: context,

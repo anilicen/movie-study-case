@@ -1,6 +1,7 @@
 import 'package:mobx/mobx.dart';
 import 'package:movie_study_case/domain/entities/movie.dart';
 import 'package:movie_study_case/domain/usecases/get_popular_movies.dart';
+import 'package:movie_study_case/domain/usecases/save_favorite_movies.dart';
 
 part 'onboarding_movie_store.g.dart';
 
@@ -8,8 +9,9 @@ class OnboardingMovieStore = _OnboardingMovieStore with _$OnboardingMovieStore;
 
 abstract class _OnboardingMovieStore with Store {
   final GetPopularMoviesUseCase _getPopularMovies;
+  final SaveFavoriteMoviesUseCase _saveFavoriteMovies;
 
-  _OnboardingMovieStore(this._getPopularMovies);
+  _OnboardingMovieStore(this._getPopularMovies, this._saveFavoriteMovies);
 
   @observable
   ObservableList<Movie> movies = ObservableList<Movie>();
@@ -86,6 +88,16 @@ abstract class _OnboardingMovieStore with Store {
 
   bool isMovieSelected(Movie movie) {
     return selectedMovies.any((m) => m.id == movie.id);
+  }
+
+  @action
+  Future<void> saveFavoriteMovies() async {
+    try {
+      await _saveFavoriteMovies(selectedMovieIds);
+    } catch (e) {
+      errorMessage = 'Failed to save favorite movies';
+      rethrow;
+    }
   }
 
   Map<String, dynamic> toJson() {
