@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'config/theme/app_theme.dart';
 import 'core/di/service_locator.dart';
+import 'presentation/screens/onboarding_movie_selection/onboarding_movie_selection_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Movie App',
       theme: AppTheme.darkTheme,
-      home: const Scaffold(body: Center(child: Text('Movie App'))),
+      home: const OnboardingMovieSelectionScreen(),
       debugShowCheckedModeBanner: false,
     );
   }
