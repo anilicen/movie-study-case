@@ -10,6 +10,7 @@ import 'package:movie_study_case/domain/usecases/save_favorite_genres.dart';
 import 'package:movie_study_case/presentation/stores/onboarding_movie_store/onboarding_movie_store.dart';
 import 'package:movie_study_case/presentation/stores/onboarding_genre_store/onboarding_genre_store.dart';
 import 'package:movie_study_case/presentation/stores/splash_store/splash_store.dart';
+import 'package:movie_study_case/presentation/stores/home_store/home_store.dart';
 import 'package:movie_study_case/core/services/image_preloader_service.dart';
 
 import 'package:movie_study_case/core/network/dio_service.dart';
@@ -48,7 +49,30 @@ Future<void> setupDI() async {
   );
 
   // Stores
-  getIt.registerFactory(() => OnboardingMovieStore(getIt(), getIt()));
-  getIt.registerFactory(() => OnboardingGenreStore(getIt(), getIt(), getIt()));
-  getIt.registerFactory(() => SplashStore(getIt(), getIt(), getIt()));
+  getIt.registerFactory(
+    () => OnboardingMovieStore(
+      getIt<GetPopularMoviesUseCase>(),
+      getIt<SaveFavoriteMoviesUseCase>(),
+    ),
+  );
+
+  getIt.registerFactory(
+    () => OnboardingGenreStore(
+      getIt<GetGenresUseCase>(),
+      getIt<SaveFavoriteGenresUseCase>(),
+      getIt<IMovieRepository>(),
+    ),
+  );
+
+  getIt.registerFactory(
+    () => SplashStore(
+      getIt<GetPopularMoviesUseCase>(),
+      getIt<GetGenresUseCase>(),
+      getIt<IMovieRepository>(),
+    ),
+  );
+
+  getIt.registerFactory(
+    () => HomeStore(getIt<IMovieRepository>(), getIt<LocalDataSource>()),
+  );
 }

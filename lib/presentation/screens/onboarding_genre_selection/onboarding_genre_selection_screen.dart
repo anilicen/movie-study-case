@@ -219,15 +219,9 @@ class _OnboardingGenreSelectionScreenState
                                     try {
                                       await store.saveFavoriteGenres();
                                       if (context.mounted) {
-                                        ScaffoldMessenger.of(
+                                        Navigator.of(
                                           context,
-                                        ).showSnackBar(
-                                          const SnackBar(
-                                            content: Text(
-                                              'Favorite genres saved!',
-                                            ),
-                                          ),
-                                        );
+                                        ).pushReplacementNamed('/home');
                                       }
                                     } catch (e) {
                                       if (context.mounted) {

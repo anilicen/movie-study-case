@@ -77,14 +77,21 @@ abstract class _SplashStore with Store {
     try {
       final genres = await _repository.getGenres();
 
-      // Preload first movie poster for each genre
+      // Preload first 9 movie posters for each genre
       for (final genre in genres) {
         try {
           final movies = await _repository.getMoviesByGenre(genre.id, page: 1);
-          if (movies.isNotEmpty && movies.first.posterPath.isNotEmpty) {
-            final imageUrl =
-                'https://image.tmdb.org/t/p/w500${movies.first.posterPath}';
-            await precacheImage(CachedNetworkImageProvider(imageUrl), context);
+          final moviesToPreload = movies.take(9).toList();
+
+          for (final movie in moviesToPreload) {
+            if (movie.posterPath.isNotEmpty) {
+              final imageUrl =
+                  'https://image.tmdb.org/t/p/w500${movie.posterPath}';
+              await precacheImage(
+                CachedNetworkImageProvider(imageUrl),
+                context,
+              );
+            }
           }
         } catch (e) {
           continue; // Skip if fails
