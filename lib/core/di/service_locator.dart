@@ -12,6 +12,8 @@ import 'package:movie_study_case/presentation/stores/onboarding_genre_store/onbo
 import 'package:movie_study_case/presentation/stores/splash_store/splash_store.dart';
 import 'package:movie_study_case/presentation/stores/home_store/home_store.dart';
 import 'package:movie_study_case/core/services/image_preloader_service.dart';
+import 'package:movie_study_case/core/services/remote_config_service.dart';
+import 'package:movie_study_case/presentation/stores/paywall_variant_a_store/paywall_variant_a_store.dart';
 
 import 'package:movie_study_case/core/network/dio_service.dart';
 import 'package:dio/dio.dart';
@@ -47,6 +49,7 @@ Future<void> setupDI() async {
   getIt.registerLazySingleton<ImagePreloaderService>(
     () => ImagePreloaderService(),
   );
+  getIt.registerLazySingleton<RemoteConfigService>(() => RemoteConfigService());
 
   // Stores
   getIt.registerFactory(
@@ -69,10 +72,12 @@ Future<void> setupDI() async {
       getIt<GetPopularMoviesUseCase>(),
       getIt<GetGenresUseCase>(),
       getIt<IMovieRepository>(),
+      getIt<RemoteConfigService>(),
     ),
   );
 
   getIt.registerFactory(
     () => HomeStore(getIt<IMovieRepository>(), getIt<LocalDataSource>()),
   );
+  getIt.registerFactory(() => PaywallVariantAStore());
 }

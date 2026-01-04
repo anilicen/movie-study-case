@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:movie_study_case/domain/usecases/get_popular_movies.dart';
 import 'package:movie_study_case/domain/usecases/get_genres.dart';
 import 'package:movie_study_case/domain/repositories/i_movie_repository.dart';
+import 'package:movie_study_case/core/services/remote_config_service.dart';
 
 part 'splash_store.g.dart';
 
@@ -13,8 +14,14 @@ abstract class _SplashStore with Store {
   final GetPopularMoviesUseCase _getPopularMovies;
   final GetGenresUseCase _getGenres;
   final IMovieRepository _repository;
+  final RemoteConfigService _remoteConfigService;
 
-  _SplashStore(this._getPopularMovies, this._getGenres, this._repository);
+  _SplashStore(
+    this._getPopularMovies,
+    this._getGenres,
+    this._repository,
+    this._remoteConfigService,
+  );
 
   @observable
   bool isLoadingMovies = false;
@@ -33,6 +40,9 @@ abstract class _SplashStore with Store {
 
   @action
   Future<void> preloadData() async {
+    // Initialize Remote Config (A/B Test Variant)
+    await _remoteConfigService.fetchAndActivate();
+
     await Future.wait([_preloadMovies(), _preloadGenres()]);
   }
 
@@ -56,14 +66,17 @@ abstract class _SplashStore with Store {
     try {
       final genres = await _getGenres();
 
-      // Preload representative movies for each genre
-      for (final genre in genres) {
-        try {
-          await _repository.getMoviesByGenre(genre.id, page: 1);
-        } catch (e) {
-          continue;
-        }
-      }
+      // Preload representative movies for each genre in parallel
+      await Future.wait(
+        genres.map((genre) async {
+          try {
+            await _repository.getMoviesByGenre(genre.id, page: 1);
+          } catch (e) {
+            // Ignore errors for individual genres
+          }
+        }),
+      );
+
       genresLoaded = true;
     } catch (e) {
       // Silently fail
@@ -76,27 +89,36 @@ abstract class _SplashStore with Store {
   Future<void> preloadGenreImages(BuildContext context) async {
     try {
       final genres = await _repository.getGenres();
+      final preloadingFutures = <Future<void>>[];
 
-      // Preload first 9 movie posters for each genre
       for (final genre in genres) {
-        try {
-          final movies = await _repository.getMoviesByGenre(genre.id, page: 1);
-          final moviesToPreload = movies.take(9).toList();
+        preloadingFutures.add(() async {
+          try {
+            final movies = await _repository.getMoviesByGenre(
+              genre.id,
+              page: 1,
+            );
+            final moviesToPreload = movies.take(9).toList();
 
-          for (final movie in moviesToPreload) {
-            if (movie.posterPath.isNotEmpty) {
-              final imageUrl =
-                  'https://image.tmdb.org/t/p/w500${movie.posterPath}';
-              await precacheImage(
-                CachedNetworkImageProvider(imageUrl),
-                context,
-              );
-            }
+            final imageFutures = moviesToPreload
+                .where((movie) => movie.posterPath.isNotEmpty)
+                .map((movie) {
+                  final imageUrl =
+                      'https://image.tmdb.org/t/p/w500${movie.posterPath}';
+                  return precacheImage(
+                    CachedNetworkImageProvider(imageUrl),
+                    context,
+                  );
+                });
+
+            await Future.wait(imageFutures);
+          } catch (e) {
+            // Skip if fails
           }
-        } catch (e) {
-          continue; // Skip if fails
-        }
+        }());
       }
+
+      await Future.wait(preloadingFutures);
     } catch (e) {
       // Silently fail
     }

@@ -4,11 +4,14 @@ import 'package:movie_study_case/presentation/screens/onboarding_movie_selection
 import 'package:movie_study_case/presentation/screens/onboarding_genre_selection/onboarding_genre_selection_screen.dart';
 import 'package:movie_study_case/presentation/screens/home/home_screen.dart';
 
+import 'package:movie_study_case/presentation/screens/paywall/paywall_screen.dart';
+
 class AppRoutes {
   static const String splash = '/';
   static const String movieOnboarding = '/movie-onboarding';
   static const String genreOnboarding = '/genre-onboarding';
   static const String home = '/home';
+  static const String paywall = '/paywall';
 
   static Map<String, WidgetBuilder> getRoutes() {
     return {
@@ -16,6 +19,7 @@ class AppRoutes {
       movieOnboarding: (context) => const OnboardingMovieSelectionScreen(),
       genreOnboarding: (context) => const OnboardingGenreSelectionScreen(),
       home: (context) => const HomeScreen(),
+      paywall: (context) => const PaywallScreen(),
     };
   }
 }

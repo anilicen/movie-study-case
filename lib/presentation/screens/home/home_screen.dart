@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:movie_study_case/config/theme/app_colors.dart';
 import 'package:movie_study_case/core/di/service_locator.dart';
@@ -50,33 +51,47 @@ class _HomeScreenState extends State<HomeScreen> {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(height: 26),
+                      SizedBox(height: 26.h),
 
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20),
-                        child: Text(
-                          'For You ⭐️',
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.kWhite,
-                          ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20.w),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'For You ⭐️',
+                              style: TextStyle(
+                                fontSize: 24.sp,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.kWhite,
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).pushNamed('/paywall');
+                              },
+                              child: Text(
+                                '👑',
+                                style: TextStyle(fontSize: 24.sp),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
 
-                      const SizedBox(height: 20),
+                      SizedBox(height: 20.h),
 
                       SizedBox(
-                        height: 80,
+                        height: 80.h,
                         child: Observer(
                           builder: (_) => ListView.builder(
                             scrollDirection: Axis.horizontal,
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            padding: EdgeInsets.symmetric(horizontal: 20.w),
                             itemCount: store.favoriteMovies.length,
                             itemBuilder: (context, index) {
                               final movie = store.favoriteMovies[index];
                               return Padding(
-                                padding: const EdgeInsets.only(right: 16),
+                                padding: EdgeInsets.only(right: 16.w),
                                 child: PrimaryCircularContainer(
                                   isActive: false,
                                   child: ClipOval(
@@ -101,18 +116,18 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
 
-                      const SizedBox(height: 20),
+                      SizedBox(height: 20.h),
 
-                      Divider(color: AppColors.kWhite, thickness: 1),
+                      Divider(color: AppColors.kWhite, thickness: 1.h),
 
-                      const SizedBox(height: 16),
+                      SizedBox(height: 16.h),
 
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20.w),
                         child: Text(
                           'Movies 🎬',
                           style: TextStyle(
-                            fontSize: 24,
+                            fontSize: 24.sp,
                             fontWeight: FontWeight.bold,
                             color: AppColors.kWhite,
                           ),
@@ -121,9 +136,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
                       // Search Bar
                       Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 16,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 16.w,
+                          vertical: 16.h,
                         ),
                         child: TextField(
                           onChanged: store.updateSearchQuery,
@@ -136,22 +151,22 @@ class _HomeScreenState extends State<HomeScreen> {
                             filled: true,
                             fillColor: AppColors.kWhite,
                             isDense: true,
-                            contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 9,
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: 16.w,
+                              vertical: 9.h,
                             ),
                             border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(12.r),
                               borderSide: BorderSide.none,
                             ),
-                            prefixIcon: const Icon(
+                            prefixIcon: Icon(
                               Icons.search,
-                              size: 20,
+                              size: 20.sp,
                               color: AppColors.kDarkGray,
                             ),
-                            prefixIconConstraints: const BoxConstraints(
-                              minWidth: 40,
-                              minHeight: 40,
+                            prefixIconConstraints: BoxConstraints(
+                              minWidth: 40.w,
+                              minHeight: 40.h,
                             ),
                           ),
                         ),
@@ -159,16 +174,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
                       // Genre Chips
                       SizedBox(
-                        height: 44,
+                        height: 44.h,
                         child: ListView.builder(
                           controller: store.chipScrollController,
                           scrollDirection: Axis.horizontal,
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          padding: EdgeInsets.symmetric(horizontal: 20.w),
                           itemCount: store.genres.length,
                           itemBuilder: (context, index) {
                             final genre = store.genres[index];
                             return Padding(
-                              padding: const EdgeInsets.only(right: 8),
+                              padding: EdgeInsets.only(right: 8.w),
                               child: Observer(
                                 builder: (_) {
                                   final isSelected =
@@ -186,7 +201,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
 
-                      const SizedBox(height: 16),
+                      SizedBox(height: 16.h),
 
                       // Category Feed
                       Expanded(
@@ -194,7 +209,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           builder: (_) => ScrollablePositionedList.builder(
                             itemScrollController: store.itemScrollController,
                             itemPositionsListener: store.itemPositionsListener,
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            padding: EdgeInsets.symmetric(horizontal: 20.w),
                             itemCount: store.genres.length,
                             itemBuilder: (context, genreIndex) {
                               final genre = store.genres[genreIndex];
@@ -202,64 +217,54 @@ class _HomeScreenState extends State<HomeScreen> {
                                   store.moviesByGenre[genre.id] ?? [];
 
                               return Container(
-                                margin: const EdgeInsets.only(bottom: 32),
+                                margin: EdgeInsets.only(bottom: 32.h),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
                                       genre.name,
-                                      style: const TextStyle(
-                                        fontSize: 20,
+                                      style: TextStyle(
+                                        fontSize: 20.sp,
                                         fontWeight: FontWeight.bold,
                                         color: AppColors.kWhite,
                                       ),
                                     ),
-                                    const SizedBox(height: 12),
+                                    SizedBox(height: 12.h),
                                     GridView.builder(
                                       shrinkWrap: true,
                                       physics:
                                           const NeverScrollableScrollPhysics(),
                                       gridDelegate:
-                                          const SliverGridDelegateWithFixedCrossAxisCount(
+                                          SliverGridDelegateWithFixedCrossAxisCount(
                                             crossAxisCount: 3,
-                                            crossAxisSpacing: 12,
-                                            mainAxisSpacing: 12,
+                                            crossAxisSpacing: 12.w,
+                                            mainAxisSpacing: 12.h,
                                             childAspectRatio: 0.7,
                                           ),
                                       itemCount: movies.length,
                                       itemBuilder: (context, movieIndex) {
                                         final movie = movies[movieIndex];
-                                        return Column(
-                                          children: [
-                                            Expanded(
-                                              child: PrimaryContainer(
-                                                child: ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(8),
-                                                  child: CachedNetworkImage(
-                                                    imageUrl:
-                                                        'https://image.tmdb.org/t/p/w500${movie.posterPath}',
-                                                    fit: BoxFit.cover,
-                                                    width: double.infinity,
-                                                    height: double.infinity,
-                                                    placeholder:
-                                                        (
-                                                          context,
-                                                          url,
-                                                        ) => const Center(
-                                                          child:
-                                                              CircularProgressIndicator(),
-                                                        ),
-                                                    errorWidget:
-                                                        (context, url, error) =>
-                                                            const Icon(
-                                                              Icons.error,
-                                                            ),
-                                                  ),
-                                                ),
-                                              ),
+                                        return PrimaryContainer(
+                                          child: ClipRRect(
+                                            borderRadius: BorderRadius.circular(
+                                              8.r,
                                             ),
-                                          ],
+                                            child: CachedNetworkImage(
+                                              imageUrl:
+                                                  'https://image.tmdb.org/t/p/w500${movie.posterPath}',
+                                              fit: BoxFit.cover,
+                                              width: double.infinity,
+                                              height: double.infinity,
+                                              placeholder: (context, url) =>
+                                                  const Center(
+                                                    child:
+                                                        CircularProgressIndicator(),
+                                                  ),
+                                              errorWidget:
+                                                  (context, url, error) =>
+                                                      const Icon(Icons.error),
+                                            ),
+                                          ),
                                         );
                                       },
                                     ),
@@ -279,7 +284,7 @@ class _HomeScreenState extends State<HomeScreen> {
               bottom: 0,
               left: 0,
               right: 0,
-              child: GradientShadow(height: 30, isTop: false),
+              child: GradientShadow(height: 30.h, isTop: false),
             ),
           ],
         ),

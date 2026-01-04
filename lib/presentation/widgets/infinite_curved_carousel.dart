@@ -127,6 +127,8 @@ class _InfiniteCurvedCarouselState extends State<InfiniteCurvedCarousel> {
         return Center(
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 200),
+            width: 180,
+            height: 252,
             child: GestureDetector(
               onTap: () => widget.onMovieSelected(movie),
               child: CurvedMovieCard(

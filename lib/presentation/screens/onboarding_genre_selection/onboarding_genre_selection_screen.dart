@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:movie_study_case/config/theme/app_colors.dart';
 import 'package:movie_study_case/core/di/service_locator.dart';
@@ -38,7 +39,7 @@ class _OnboardingGenreSelectionScreenState
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(store.errorMessage ?? 'An error occurred'),
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16.h),
                   ElevatedButton(
                     onPressed: store.retry,
                     child: const Text('Retry'),
@@ -54,30 +55,30 @@ class _OnboardingGenreSelectionScreenState
 
           return SafeArea(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 38),
+                  SizedBox(height: 38.h),
                   if (!store.canProceed)
                     SizedBox(
-                      height: 80,
+                      height: 80.h,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Welcome',
                             style: TextStyle(
-                              fontSize: 24,
+                              fontSize: 24.sp,
                               color: AppColors.kWhite,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          const SizedBox(height: 12),
-                          const Text(
+                          SizedBox(height: 12.h),
+                          Text(
                             'Choose your 2 favorite genres',
                             style: TextStyle(
-                              fontSize: 20,
+                              fontSize: 20.sp,
                               color: AppColors.kWhite,
                               fontWeight: FontWeight.w500,
                             ),
@@ -87,30 +88,30 @@ class _OnboardingGenreSelectionScreenState
                     )
                   else
                     Container(
-                      height: 80,
-                      padding: const EdgeInsets.only(top: 36),
-                      child: const Text(
+                      height: 80.h,
+                      padding: EdgeInsets.only(top: 36.h),
+                      child: Text(
                         'Thank you 👍',
                         style: TextStyle(
-                          fontSize: 24,
+                          fontSize: 24.sp,
                           color: AppColors.kWhite,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
 
-                  const SizedBox(height: 24),
+                  SizedBox(height: 24.h),
 
                   Expanded(
                     child: Stack(
                       children: [
                         GridView.builder(
-                          padding: const EdgeInsets.only(bottom: 100),
+                          padding: EdgeInsets.only(bottom: 100.h),
                           gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
+                              SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 2,
-                                crossAxisSpacing: 45,
-                                mainAxisSpacing: 24,
+                                crossAxisSpacing: 45.w,
+                                mainAxisSpacing: 24.h,
                               ),
                           itemCount: store.genres.length,
                           itemBuilder: (context, index) {
@@ -146,15 +147,12 @@ class _OnboardingGenreSelectionScreenState
                                                       ) => Center(
                                                         child: Text(
                                                           genre.name,
-                                                          style:
-                                                              const TextStyle(
-                                                                fontSize: 16,
-                                                                color: Colors
-                                                                    .black,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                              ),
+                                                          style: TextStyle(
+                                                            fontSize: 16.sp,
+                                                            color: Colors.black,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
                                                           textAlign:
                                                               TextAlign.center,
                                                         ),
@@ -164,8 +162,8 @@ class _OnboardingGenreSelectionScreenState
                                             : Center(
                                                 child: Text(
                                                   genre.name,
-                                                  style: const TextStyle(
-                                                    fontSize: 16,
+                                                  style: TextStyle(
+                                                    fontSize: 16.sp,
                                                     color: Colors.black,
                                                     fontWeight: FontWeight.bold,
                                                   ),
@@ -174,12 +172,12 @@ class _OnboardingGenreSelectionScreenState
                                               ),
                                       ),
                                     ),
-                                    const SizedBox(height: 8),
+                                    SizedBox(height: 8.h),
                                     Text(
                                       genre.name,
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         color: AppColors.kWhite,
-                                        fontSize: 14,
+                                        fontSize: 14.sp,
                                         fontWeight: FontWeight.w500,
                                       ),
                                       textAlign: TextAlign.center,
@@ -193,23 +191,23 @@ class _OnboardingGenreSelectionScreenState
                           },
                         ),
                         // Top shadow
-                        const Positioned(
+                        Positioned(
                           top: 0,
                           left: 0,
                           right: 0,
-                          child: GradientShadow(height: 40, isTop: true),
+                          child: GradientShadow(height: 40.h, isTop: true),
                         ),
                         // Bottom shadow
-                        const Positioned(
+                        Positioned(
                           bottom: 0,
                           left: 0,
                           right: 0,
-                          child: GradientShadow(height: 120, isTop: false),
+                          child: GradientShadow(height: 120.h, isTop: false),
                         ),
                         Positioned(
                           left: 0,
                           right: 0,
-                          bottom: 20,
+                          bottom: 20.h,
                           child: PrimaryButton(
                             text: "Continue",
                             isActive: store.canProceed,

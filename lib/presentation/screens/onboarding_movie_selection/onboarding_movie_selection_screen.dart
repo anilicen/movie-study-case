@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movie_study_case/config/theme/app_colors.dart';
 import 'package:movie_study_case/core/di/service_locator.dart';
 import 'package:movie_study_case/presentation/stores/onboarding_movie_store/onboarding_movie_store.dart';
@@ -42,7 +43,7 @@ class _OnboardingMovieSelectionScreenState
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(store.errorMessage ?? 'An error occurred'),
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16.h),
                   ElevatedButton(
                     onPressed: store.retry,
                     child: const Text('Retry'),
@@ -57,30 +58,30 @@ class _OnboardingMovieSelectionScreenState
           }
 
           return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 38),
+                SizedBox(height: 38.h),
                 if (!store.canProceed)
                   SizedBox(
-                    height: 80,
+                    height: 80.h,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
+                        Text(
                           'Welcome',
                           style: TextStyle(
-                            fontSize: 24,
+                            fontSize: 24.sp,
                             color: AppColors.kWhite,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        const SizedBox(height: 12),
-                        const Text(
+                        SizedBox(height: 12.h),
+                        Text(
                           'Choose your 3 favorite movies',
                           style: TextStyle(
-                            fontSize: 20,
+                            fontSize: 20.sp,
                             color: AppColors.kWhite,
                             fontWeight: FontWeight.w500,
                           ),
@@ -90,13 +91,13 @@ class _OnboardingMovieSelectionScreenState
                   )
                 else
                   Container(
-                    padding: const EdgeInsets.only(top: 20),
+                    padding: EdgeInsets.only(top: 20.h),
 
-                    height: 80,
-                    child: const Text(
+                    height: 80.h,
+                    child: Text(
                       'Continue to next step 👉',
                       style: TextStyle(
-                        fontSize: 24,
+                        fontSize: 24.sp,
                         color: AppColors.kWhite,
                         fontWeight: FontWeight.bold,
                       ),
@@ -107,7 +108,7 @@ class _OnboardingMovieSelectionScreenState
                     maxWidth: MediaQuery.of(context).size.width,
                     alignment: Alignment.centerLeft,
                     child: Transform.translate(
-                      offset: const Offset(-20, 0),
+                      offset: Offset(-20.w, 0),
                       child: InfiniteCurvedCarousel(
                         movies: store.movies,
                         selectedMovieIds: store.selectedMovieIds,
@@ -144,7 +145,7 @@ class _OnboardingMovieSelectionScreenState
                         }
                       : null,
                 ),
-                const SizedBox(height: 45),
+                SizedBox(height: 45.h),
               ],
             ),
           );

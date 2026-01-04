@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:movie_study_case/config/theme/app_colors.dart';
 
@@ -20,8 +21,8 @@ class PrimaryContainer extends StatelessWidget {
             )
           : null,
       child: Container(
-        height: 252,
-        width: 180,
+        height: 252.h,
+        width: 180.w,
         decoration: BoxDecoration(
           color: AppColors.kWhite,
           borderRadius: BorderRadius.circular(16),
