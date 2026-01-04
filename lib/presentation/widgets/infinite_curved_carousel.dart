@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movie_study_case/domain/entities/movie.dart';
 import 'package:movie_study_case/presentation/widgets/curved_movie_card.dart';
 import 'package:movie_study_case/presentation/widgets/primary_container.dart';
@@ -37,7 +38,7 @@ class _InfiniteCurvedCarouselState extends State<InfiniteCurvedCarousel> {
     final width = MediaQuery.of(context).size.width;
     if (width <= 0) return;
 
-    final fraction = (180 + 16) / width;
+    final fraction = (180.w + 16.w) / width;
 
     if (_pageController != null) {
       if ((_pageController!.viewportFraction - fraction).abs() < 0.001) return;
@@ -127,8 +128,8 @@ class _InfiniteCurvedCarouselState extends State<InfiniteCurvedCarousel> {
         return Center(
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 200),
-            width: 180,
-            height: 252,
+            width: 180.w,
+            height: 252.h,
             child: GestureDetector(
               onTap: () => widget.onMovieSelected(movie),
               child: CurvedMovieCard(

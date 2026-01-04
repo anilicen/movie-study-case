@@ -5,6 +5,8 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:movie_study_case/config/theme/app_colors.dart';
 import 'package:movie_study_case/core/di/service_locator.dart';
 import 'package:movie_study_case/presentation/stores/paywall_variant_a_store/paywall_variant_a_store.dart';
+import 'package:movie_study_case/presentation/widgets/animated_feature_icon.dart';
+import 'package:movie_study_case/presentation/widgets/animated_free_trial_button.dart';
 import 'package:movie_study_case/presentation/widgets/primary_button.dart';
 import 'package:movie_study_case/presentation/widgets/subscription_option.dart';
 
@@ -30,212 +32,249 @@ class _PaywallVariantAState extends State<PaywallVariantA> {
     return Scaffold(
       backgroundColor: AppColors.kBlack,
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Observer(
-            builder: (_) {
-              return SingleChildScrollView(
-                child: Column(
-                  children: [
-                    SizedBox(height: 22.h),
-                    Center(
-                      child: Text(
-                        'AppName',
-                        style: TextStyle(
-                          color: AppColors.kWhite,
-                          fontSize: 24.sp,
-                          fontWeight: FontWeight.bold,
+        child: Stack(
+          children: [
+            Observer(
+              builder: (_) {
+                return SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      SizedBox(height: 22.h),
+                      Center(
+                        child: Text(
+                          'AppName',
+                          style: TextStyle(
+                            color: AppColors.kWhite,
+                            fontSize: 24.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
-                    ),
-                    // Content Columns
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Features Column
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(height: 30.h), // Spacer for Header
-                              _buildFeatureText('Daily Movie Suggestions'),
-                              _buildFeatureText('Create Watch Parties'),
-                              _buildFeatureText('Detailed Statistics'),
-                              _buildFeatureText('Ad-Free Experience'),
-                            ],
-                          ),
-                        ),
-
-                        // FREE Column
-                        Column(
+                      // Content Columns
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            SizedBox(
-                              height: 30.h,
-                              child: Center(
-                                child: Text(
-                                  'FREE',
-                                  style: TextStyle(
-                                    color: AppColors.kWhite,
-                                    fontSize: 16.sp,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
+                            // Features Column
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(height: 30.h), // Spacer for Header
+                                  _buildFeatureText('Daily Movie Suggestions'),
+                                  _buildFeatureText('Create Watch Parties'),
+                                  _buildFeatureText('Detailed Statistics'),
+                                  _buildFeatureText('Ad-Free Experience'),
+                                ],
                               ),
                             ),
-                            _buildFeatureIcon(true),
-                            _buildFeatureIcon(false),
-                            _buildFeatureIcon(false),
-                            _buildFeatureIcon(false),
-                          ],
-                        ),
 
-                        SizedBox(width: 20.w),
-
-                        // PRO Column
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8.r),
-                            border: Border.all(color: AppColors.kLightRed),
-                          ),
-
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                height: 30.h,
-                                child: Center(
-                                  child: Text(
-                                    'PRO',
-                                    style: TextStyle(
-                                      color: AppColors.kWhite,
-                                      fontSize: 16.sp,
-                                      fontWeight: FontWeight.bold,
+                            // FREE Column
+                            Column(
+                              children: [
+                                SizedBox(
+                                  height: 30.h,
+                                  child: Center(
+                                    child: Text(
+                                      'FREE',
+                                      style: TextStyle(
+                                        color: AppColors.kWhite,
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   ),
                                 ),
+                                AnimatedFeatureIcon(isEnabled: true, index: 0),
+                                AnimatedFeatureIcon(isEnabled: false, index: 1),
+                                AnimatedFeatureIcon(isEnabled: false, index: 2),
+                                AnimatedFeatureIcon(isEnabled: false, index: 3),
+                              ],
+                            ),
+
+                            SizedBox(width: 20.w),
+
+                            // PRO Column
+                            Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8.r),
+                                border: Border.all(color: AppColors.kLightRed),
                               ),
-                              _buildFeatureIcon(true),
-                              _buildFeatureIcon(true),
-                              _buildFeatureIcon(true),
-                              _buildFeatureIcon(true),
+
+                              child: Column(
+                                children: [
+                                  SizedBox(
+                                    height: 30.h,
+                                    child: Center(
+                                      child: Text(
+                                        'PRO',
+                                        style: TextStyle(
+                                          color: AppColors.kWhite,
+                                          fontSize: 16.sp,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  ...List.generate(4, (index) {
+                                    return AnimatedFeatureIcon(
+                                      isEnabled:
+                                          index < store.enabledFeaturesCount,
+                                      index: index,
+                                    );
+                                  }),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 30.h),
+
+                      // Free Trial Toggle
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20.w),
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 20.w,
+                            vertical: 8.h,
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12.r),
+                            border: Border.all(color: AppColors.kLightRed),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Enable Free Trial',
+                                style: TextStyle(
+                                  color: AppColors.kWhite,
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              CupertinoSwitch(
+                                value: store.isFreeTrialEnabled,
+                                onChanged: (value) =>
+                                    store.toggleFreeTrial(value),
+                                activeTrackColor: const Color(0xFF34C759),
+                              ),
                             ],
                           ),
                         ),
-                      ],
-                    ),
-                    SizedBox(height: 30.h),
+                      ),
+                      SizedBox(height: 36.h),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20.w),
+                        child: Column(
+                          children: [
+                            SubscriptionOption(
+                              optionName: 'Weekly',
+                              price: '1.99',
+                              perWeekPrice: '1.99',
+                              isSelected: store.selectedOption == 'Weekly',
+                              onSelected: () => store.selectOption('Weekly'),
+                            ),
+                            SizedBox(height: 20.h),
+                            SubscriptionOption(
+                              optionName: 'Monthly',
+                              price: '11.99',
+                              perWeekPrice: '2.99',
+                              isSelected: store.selectedOption == 'Monthly',
+                              onSelected: () => store.selectOption('Monthly'),
+                            ),
+                            SizedBox(height: 20.h),
+                            SubscriptionOption(
+                              optionName: 'Yearly',
+                              price: '49.99',
+                              perWeekPrice: '0.96',
+                              isSelected: store.selectedOption == 'Yearly',
+                              onSelected: () => store.selectOption('Yearly'),
+                            ),
+                          ],
+                        ),
+                      ),
 
-                    // Free Trial Toggle
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 20.w,
-                        vertical: 8.h,
-                      ),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12.r),
-                        border: Border.all(color: AppColors.kLightRed),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      SizedBox(height: 20.h),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
+                          Image.asset(
+                            'assets/shield_checkmark.png',
+                            height: 16.h,
+                            width: 16.w,
+                          ),
+                          SizedBox(width: 4.w),
                           Text(
-                            'Enable Free Trial',
+                            'Auto Renewable, Cancel Anytime',
                             style: TextStyle(
                               color: AppColors.kWhite,
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.bold,
+                              fontSize: 10.sp,
                             ),
-                          ),
-                          CupertinoSwitch(
-                            value: store.isFreeTrialEnabled,
-                            onChanged: (value) => store.toggleFreeTrial(value),
-                            activeTrackColor: const Color(0xFF34C759),
                           ),
                         ],
                       ),
-                    ),
-                    SizedBox(height: 36.h),
-                    SubscriptionOption(
-                      optionName: 'Weekly',
-                      price: '1.99',
-                      perWeekPrice: '1.99',
-                      isSelected: store.selectedOption == 'Weekly',
-                      onSelected: () => store.selectOption('Weekly'),
-                    ),
-                    SizedBox(height: 20.h),
-                    SubscriptionOption(
-                      optionName: 'Monthly',
-                      price: '11.99',
-                      perWeekPrice: '2.99',
-                      isSelected: store.selectedOption == 'Monthly',
-                      onSelected: () => store.selectOption('Monthly'),
-                    ),
-                    SizedBox(height: 20.h),
-                    SubscriptionOption(
-                      optionName: 'Yearly',
-                      price: '49.99',
-                      perWeekPrice: '0.96',
-                      isSelected: store.selectedOption == 'Yearly',
-                      onSelected: () => store.selectOption('Yearly'),
-                    ),
-                    SizedBox(height: 20.h),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                          'assets/shield_checkmark.png',
-                          height: 16.h,
-                          width: 16.w,
-                        ),
-                        SizedBox(width: 4.w),
-                        Text(
-                          'Auto Renewable, Cancel Anytime',
-                          style: TextStyle(
-                            color: AppColors.kWhite,
-                            fontSize: 10.sp,
+                      SizedBox(height: 20.h),
+                      if (store.isFreeTrialEnabled)
+                        AnimatedFreeTrialButton(
+                          onPressed: () {},
+                          line1: '3 Days Free',
+                          line2: 'No Payment Now',
+                        )
+                      else
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 20.w),
+                          child: PrimaryButton(
+                            text: 'Unlock MovieAI PRO',
+                            isActive: true,
+                            isLoading: false,
+                            onPressed: () {},
                           ),
                         ),
-                      ],
-                    ),
-                    SizedBox(height: 20.h),
-                    PrimaryButton(
-                      text: 'Unlock MovieAI PRO',
-                      isActive: true,
-                      isLoading: false,
-                      onPressed: () {},
-                    ),
-                    SizedBox(height: 12.h),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Text(
-                          'Terms of Use',
-                          style: TextStyle(
-                            color: AppColors.kWhite,
-                            fontSize: 8.sp,
+                      SizedBox(height: 12.h),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Text(
+                            'Terms of Use',
+                            style: TextStyle(
+                              color: AppColors.kWhite,
+                              fontSize: 8.sp,
+                            ),
                           ),
-                        ),
-                        Text(
-                          'Restore Purchase',
-                          style: TextStyle(
-                            color: AppColors.kWhite,
-                            fontSize: 8.sp,
+                          Text(
+                            'Restore Purchase',
+                            style: TextStyle(
+                              color: AppColors.kWhite,
+                              fontSize: 8.sp,
+                            ),
                           ),
-                        ),
-                        Text(
-                          'Privacy Policy',
-                          style: TextStyle(
-                            color: AppColors.kWhite,
-                            fontSize: 8.sp,
+                          Text(
+                            'Privacy Policy',
+                            style: TextStyle(
+                              color: AppColors.kWhite,
+                              fontSize: 8.sp,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 20.h),
-                  ],
-                ),
-              );
-            },
-          ),
+                        ],
+                      ),
+                      SizedBox(height: 20.h),
+                    ],
+                  ),
+                );
+              },
+            ),
+            Positioned(
+              top: 16.h,
+              right: 20.w,
+              child: GestureDetector(
+                onTap: () => Navigator.of(context).pop(),
+                child: Icon(Icons.close, color: AppColors.kWhite, size: 24.sp),
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -253,21 +292,6 @@ class _PaywallVariantAState extends State<PaywallVariantA> {
           fontWeight: FontWeight.w500,
         ),
       ),
-    );
-  }
-
-  Widget _buildFeatureIcon(bool isEnabled) {
-    return Container(
-      height: 40.h, // Fixed height for alignment
-      width: 50.w,
-      alignment: Alignment.center,
-      child: isEnabled
-          ? Image.asset(
-              'assets/green_check_circle.png',
-              width: 24.w,
-              height: 24.h,
-            )
-          : Image.asset('assets/gray-cross.png', width: 24.w, height: 24.h),
     );
   }
 }

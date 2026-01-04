@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:movie_study_case/config/theme/app_colors.dart';
 
@@ -21,7 +22,7 @@ class PrimaryCircularContainer extends StatelessWidget {
           color: AppColors.kWhite,
           shape: BoxShape.circle,
           border: isActive
-              ? Border.all(color: AppColors.kLightRed, width: 2)
+              ? Border.all(color: AppColors.kLightRed, width: 2.w)
               : null,
         ),
         child: Stack(

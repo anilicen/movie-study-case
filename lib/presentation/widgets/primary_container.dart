@@ -15,9 +15,9 @@ class PrimaryContainer extends StatelessWidget {
       foregroundPainter: isActive
           ? InnerShadowPainter(
               shadowColor: AppColors.kLightRed.withValues(alpha: 0.3),
-              blurRadius: 60,
-              spread: 24,
-              borderRadius: BorderRadius.circular(16),
+              blurRadius: 60.r,
+              spread: 24.r,
+              borderRadius: BorderRadius.circular(16.r),
             )
           : null,
       child: Container(
@@ -25,7 +25,7 @@ class PrimaryContainer extends StatelessWidget {
         width: 180.w,
         decoration: BoxDecoration(
           color: AppColors.kWhite,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(16.r),
         ),
         clipBehavior: Clip.antiAlias,
         child: Stack(
@@ -34,8 +34,8 @@ class PrimaryContainer extends StatelessWidget {
             if (child != null) child!,
             if (isActive)
               Positioned(
-                right: 16,
-                bottom: 24,
+                right: 16.w,
+                bottom: 24.h,
                 child: SvgPicture.asset('assets/checkmark.svg'),
               ),
           ],
@@ -72,7 +72,7 @@ class InnerShadowPainter extends CustomPainter {
 
     final RRect innerRRect = rrect.deflate(spread);
 
-    final Rect outerRect = rect.inflate(blurRadius + spread + 50);
+    final Rect outerRect = rect.inflate(blurRadius + spread + 50.r);
 
     final Path path = Path()
       ..fillType = PathFillType.evenOdd

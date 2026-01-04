@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movie_study_case/config/theme/app_colors.dart';
 
 class PrimaryChips extends StatelessWidget {
@@ -18,12 +19,12 @@ class PrimaryChips extends StatelessWidget {
       onTap: onTap,
       child: Container(
         padding: EdgeInsets.symmetric(
-          horizontal: isSelected ? 8 : 20,
-          vertical: 6.5,
+          horizontal: isSelected ? 8.w : 20.w,
+          vertical: 6.5.h,
         ),
         decoration: BoxDecoration(
           color: isSelected ? AppColors.kLightRed : AppColors.kWhite,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(16.r),
         ),
         child: Row(
           children: [
@@ -32,11 +33,11 @@ class PrimaryChips extends StatelessWidget {
                 children: [
                   Image.asset(
                     'assets/checkmark_chips.png',
-                    width: 16,
-                    height: 16,
+                    width: 16.w,
+                    height: 16.h,
                     color: AppColors.kWhite,
                   ),
-                  const SizedBox(width: 2),
+                  SizedBox(width: 2.w),
                 ],
               ),
             Text(

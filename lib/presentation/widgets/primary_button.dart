@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movie_study_case/config/theme/app_colors.dart';
 
 class PrimaryButton extends StatelessWidget {
@@ -20,18 +21,18 @@ class PrimaryButton extends StatelessWidget {
     return GestureDetector(
       onTap: isActive && !isLoading ? onPressed : null,
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 18.5),
+        padding: EdgeInsets.symmetric(vertical: 18.5.h),
         width: double.infinity,
         decoration: BoxDecoration(
           color: isActive ? AppColors.kLightRed : AppColors.kDarkRed,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(16.r),
         ),
         child: Center(
           child: isLoading
-              ? const SizedBox(
-                  width: 24,
-                  height: 24,
-                  child: CircularProgressIndicator(
+              ? SizedBox(
+                  width: 24.w,
+                  height: 24.h,
+                  child: const CircularProgressIndicator(
                     color: AppColors.kWhite,
                     strokeWidth: 2,
                   ),

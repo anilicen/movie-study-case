@@ -21,6 +21,9 @@ abstract class _PaywallVariantAStore with Store {
   @action
   void toggleFreeTrial(bool value) {
     isFreeTrialEnabled = value;
+    if (value) {
+      selectedOption = 'Yearly';
+    }
   }
 
   @observable
@@ -29,5 +32,23 @@ abstract class _PaywallVariantAStore with Store {
   @action
   void selectOption(String option) {
     selectedOption = option;
+    if (selectedOption != 'Yearly') {
+      isFreeTrialEnabled = false;
+    }
+  }
+
+  @computed
+  int get enabledFeaturesCount {
+    if (isFreeTrialEnabled) return 4; // Yearly is forced, so 4
+    switch (selectedOption) {
+      case 'Weekly':
+        return 2;
+      case 'Monthly':
+        return 3;
+      case 'Yearly':
+        return 4;
+      default:
+        return 4;
+    }
   }
 }

@@ -9,6 +9,15 @@ part of 'paywall_variant_a_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$PaywallVariantAStore on _PaywallVariantAStore, Store {
+  Computed<int>? _$enabledFeaturesCountComputed;
+
+  @override
+  int get enabledFeaturesCount =>
+      (_$enabledFeaturesCountComputed ??= Computed<int>(
+        () => super.enabledFeaturesCount,
+        name: '_PaywallVariantAStore.enabledFeaturesCount',
+      )).value;
+
   late final _$isInitializedAtom = Atom(
     name: '_PaywallVariantAStore.isInitialized',
     context: context,
@@ -109,7 +118,8 @@ mixin _$PaywallVariantAStore on _PaywallVariantAStore, Store {
     return '''
 isInitialized: ${isInitialized},
 isFreeTrialEnabled: ${isFreeTrialEnabled},
-selectedOption: ${selectedOption}
+selectedOption: ${selectedOption},
+enabledFeaturesCount: ${enabledFeaturesCount}
     ''';
   }
 }
