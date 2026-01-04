@@ -132,6 +132,7 @@ class _OnboardingGenreSelectionScreenState
                                                   imageUrl:
                                                       'https://image.tmdb.org/t/p/w500$posterPath',
                                                   fit: BoxFit.cover,
+                                                  fadeInDuration: Duration.zero,
                                                   width: double.infinity,
                                                   height: double.infinity,
                                                   placeholder: (context, url) =>

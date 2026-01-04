@@ -7,6 +7,8 @@ import 'core/di/service_locator.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'package:movie_study_case/config/app_config.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([
@@ -32,7 +34,7 @@ class MyApp extends StatelessWidget {
       splitScreenMode: true,
       builder: (context, child) {
         return MaterialApp(
-          title: 'Movie App',
+          title: AppConfig.instance.appName,
           theme: AppTheme.darkTheme,
           initialRoute: AppRoutes.splash,
           routes: AppRoutes.getRoutes(),

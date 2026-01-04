@@ -89,34 +89,58 @@ abstract class _SplashStore with Store {
   Future<void> preloadGenreImages(BuildContext context) async {
     try {
       final genres = await _repository.getGenres();
-      final preloadingFutures = <Future<void>>[];
+      final imagesToPreload = <String>{};
 
-      for (final genre in genres) {
-        preloadingFutures.add(() async {
-          try {
-            final movies = await _repository.getMoviesByGenre(
-              genre.id,
-              page: 1,
+      // 0. Preload 'Popular Movies' for 'Onboarding Movie Selection'
+      // Fetch from repo (cached)
+      try {
+        final popularMovies = await _repository.getPopularMovies(page: 1);
+        for (final movie in popularMovies.take(6)) {
+          if (movie.posterPath.isNotEmpty) {
+            imagesToPreload.add(
+              'https://image.tmdb.org/t/p/w500${movie.posterPath}',
             );
-            final moviesToPreload = movies.take(9).toList();
-
-            final imageFutures = moviesToPreload
-                .where((movie) => movie.posterPath.isNotEmpty)
-                .map((movie) {
-                  final imageUrl =
-                      'https://image.tmdb.org/t/p/w500${movie.posterPath}';
-                  return precacheImage(
-                    CachedNetworkImageProvider(imageUrl),
-                    context,
-                  );
-                });
-
-            await Future.wait(imageFutures);
-          } catch (e) {
-            // Skip if fails
           }
-        }());
+        }
+      } catch (e) {
+        // Ignore
       }
+
+      for (int i = 0; i < genres.length; i++) {
+        final genre = genres[i];
+        try {
+          // Movies are already cached in repository by _preloadGenres
+          final movies = await _repository.getMoviesByGenre(genre.id, page: 1);
+
+          if (movies.isEmpty) continue;
+
+          // 1. Preload the FIRST movie poster for 'Onboarding Genre Selection'
+          if (movies.first.posterPath.isNotEmpty) {
+            imagesToPreload.add(
+              'https://image.tmdb.org/t/p/w500${movies.first.posterPath}',
+            );
+          }
+
+          // 2. Preload the FIRST CATEGORY (9 movies) for 'Home Screen'
+          // Assuming the first genre in the list is the first category shown
+          if (i == 0) {
+            final homeMovies = movies.take(9);
+            for (final movie in homeMovies) {
+              if (movie.posterPath.isNotEmpty) {
+                imagesToPreload.add(
+                  'https://image.tmdb.org/t/p/w500${movie.posterPath}',
+                );
+              }
+            }
+          }
+        } catch (e) {
+          // Ignore errors
+        }
+      }
+
+      final preloadingFutures = imagesToPreload.map((url) {
+        return precacheImage(CachedNetworkImageProvider(url), context);
+      });
 
       await Future.wait(preloadingFutures);
     } catch (e) {

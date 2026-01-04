@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:movie_study_case/config/app_config.dart';
 import 'package:movie_study_case/config/theme/app_colors.dart';
 import 'package:movie_study_case/core/di/service_locator.dart';
 import 'package:movie_study_case/presentation/stores/paywall_variant_a_store/paywall_variant_a_store.dart';
@@ -42,7 +43,7 @@ class _PaywallVariantAState extends State<PaywallVariantA> {
                       SizedBox(height: 22.h),
                       Center(
                         child: Text(
-                          'AppName',
+                          AppConfig.instance.appName,
                           style: TextStyle(
                             color: AppColors.kWhite,
                             fontSize: 24.sp,
@@ -63,8 +64,10 @@ class _PaywallVariantAState extends State<PaywallVariantA> {
                                 children: [
                                   SizedBox(height: 30.h), // Spacer for Header
                                   _buildFeatureText('Daily Movie Suggestions'),
-                                  _buildFeatureText('Create Watch Parties'),
-                                  _buildFeatureText('Detailed Statistics'),
+                                  _buildFeatureText(
+                                    'AI-Powered Movie Insights',
+                                  ),
+                                  _buildFeatureText('Personalized Watchlists'),
                                   _buildFeatureText('Ad-Free Experience'),
                                 ],
                               ),

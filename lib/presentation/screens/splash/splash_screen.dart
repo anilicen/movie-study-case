@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie_study_case/config/app_config.dart';
 import 'package:movie_study_case/config/theme/app_colors.dart';
 import 'package:movie_study_case/core/di/service_locator.dart';
 import 'package:movie_study_case/presentation/stores/splash_store/splash_store.dart';
@@ -55,7 +56,7 @@ class _SplashScreenState extends State<SplashScreen> {
             Image.asset('assets/clapperboard.png', width: 170, height: 170),
             const SizedBox(height: 40),
             Text(
-              'AppName',
+              AppConfig.instance.appName,
               style: TextStyle(
                 color: AppColors.kWhite,
                 fontSize: 24,
