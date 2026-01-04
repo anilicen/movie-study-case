@@ -8,8 +8,10 @@ import 'package:movie_study_case/core/di/service_locator.dart';
 import 'package:movie_study_case/presentation/stores/paywall_variant_a_store/paywall_variant_a_store.dart';
 import 'package:movie_study_case/presentation/widgets/animated_feature_icon.dart';
 import 'package:movie_study_case/presentation/widgets/animated_free_trial_button.dart';
+import 'package:movie_study_case/presentation/widgets/auto_renew_text.dart';
 import 'package:movie_study_case/presentation/widgets/primary_button.dart';
 import 'package:movie_study_case/presentation/widgets/subscription_option.dart';
+import 'package:movie_study_case/presentation/widgets/terms_of_use.dart';
 
 class PaywallVariantA extends StatefulWidget {
   const PaywallVariantA({super.key});
@@ -201,24 +203,7 @@ class _PaywallVariantAState extends State<PaywallVariantA> {
                       ),
 
                       SizedBox(height: 20.h),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            'assets/shield_checkmark.png',
-                            height: 16.h,
-                            width: 16.w,
-                          ),
-                          SizedBox(width: 4.w),
-                          Text(
-                            'Auto Renewable, Cancel Anytime',
-                            style: TextStyle(
-                              color: AppColors.kWhite,
-                              fontSize: 10.sp,
-                            ),
-                          ),
-                        ],
-                      ),
+                      AutoRenewText(),
                       SizedBox(height: 20.h),
                       if (store.isFreeTrialEnabled)
                         AnimatedFreeTrialButton(
@@ -237,32 +222,7 @@ class _PaywallVariantAState extends State<PaywallVariantA> {
                           ),
                         ),
                       SizedBox(height: 12.h),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Text(
-                            'Terms of Use',
-                            style: TextStyle(
-                              color: AppColors.kWhite,
-                              fontSize: 8.sp,
-                            ),
-                          ),
-                          Text(
-                            'Restore Purchase',
-                            style: TextStyle(
-                              color: AppColors.kWhite,
-                              fontSize: 8.sp,
-                            ),
-                          ),
-                          Text(
-                            'Privacy Policy',
-                            style: TextStyle(
-                              color: AppColors.kWhite,
-                              fontSize: 8.sp,
-                            ),
-                          ),
-                        ],
-                      ),
+                      TermsOfUse(),
                       SizedBox(height: 20.h),
                     ],
                   ),
